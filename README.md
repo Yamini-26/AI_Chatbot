@@ -5,7 +5,7 @@ Creating an AI Chatbot with React frontend and Python (FAST API -WebSocket) back
 
 Watch the demo of the project below:
 
-[![Demo Video]()](https://drive.google.com/file/d/1ShqWZLFlVTZmbDTYLCiiW78kWtWgLAC6/view?usp=sharing)
+[![Demo Video](https://drive.google.com/uc?id=1T639aY-xuo3X2vAplEJ_MohScT8D2CZx)](https://drive.google.com/file/d/1ShqWZLFlVTZmbDTYLCiiW78kWtWgLAC6/view?usp=sharing)
 
 This video showcases the main features of the chatbot project.
 
@@ -15,7 +15,7 @@ This video showcases the main features of the chatbot project.
 - [Introduction](#introduction)
 - [Features](#features)
 - [Technologies Used](#technologies-used)
-- [Installation](#installation)
+- [Setup Instructions](#setup-instructions)
 - [Usage](#usage)
 - [WebSocket Communication](#websocket-communication)
 - [Local Storage Management](#local-storage-management)
@@ -47,27 +47,36 @@ This project is a chatbot application built using React and FastAPI that allows 
 - **Local Storage**: 
   - For storing chat history in the browser.
 
-## Installation
+## Setup Instructions
 
 To set up the project on your local machine, follow these steps:
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/your_username/chatbot-project.git
-   cd chatbot-project
+   git clone https://github.com/deasie-project/ai_chatbot.git
+   cd ai_chatbot
 
 2. **Install frontend dependencies**: Navigate to the frontend directory and install the required packages:
    ```bash
    cd frontend
    npm install
 
-3. **Run the application**: Start the development server:
+3. **Create a ```.env``` file**: Inside the backend directory, create a .env file and add your API key:
+   ```bash
+   touch backend/.env
+
+  Then add the following to the .env file:
+    ```OPENAI_API_KEY=your_openai_api_key```
+
+  Replace `your_secret_api_key` with your actual OpenAI API key.
+   
+4. **Run the application**: Start the development server:
    ```bash
    npm start
 
   The application will be available at http://localhost:3000.
 
-4. **Run the backend**: Navigate to the backend directory and install the necessary dependencies using ```requirements.txt```:
+5. **Run the backend**: Navigate to the backend directory and install the necessary dependencies using ```requirements.txt```:
    ```bash
    cd backend
    pip install -r requirements.txt
