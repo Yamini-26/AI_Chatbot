@@ -1,6 +1,15 @@
 # AI_Chatbot
 Creating an AI Chatbot with React frontend and Python (FAST API -WebSocket) backend
 
+## Demo Video
+
+Watch the demo of the project below:
+
+[![Demo Video]()](https://drive.google.com/file/d/1ShqWZLFlVTZmbDTYLCiiW78kWtWgLAC6/view?usp=sharing)
+
+This video showcases the main features of the chatbot project.
+
+
 ## Table of Contents
 
 - [Introduction](#introduction)
