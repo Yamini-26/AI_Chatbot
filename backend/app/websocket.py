@@ -18,15 +18,16 @@ async def websocket_endpoint(websocket: WebSocket):
 
     message_history = [] #a message history for the session
 
-    while True:
-        try:
+    try:
+        while True:
             # Receive prompt from user
-            message = await websocket.receive_text()
+            data = await websocket.receive_text()
+            print(f"received data from frontend is {data}")
             #Generate response from AI
-            response, message_history = generate_response(message, message_history)
+            response, message_history = generate_response(data, message_history)
             # Send chatbot's response back to user
-            await websocket.send_text(f"Chatbot: {response}")
-        except Exception as e:
-            print(f"Error: {str(e)}")
-            break
-    await websocket.close()
+            await websocket.send_text(f"{response}")
+    except Exception as e:
+        print(f"Error: {str(e)}")
+            # break
+        await websocket.close()

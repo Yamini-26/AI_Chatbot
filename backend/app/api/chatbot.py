@@ -38,14 +38,14 @@ def generate_response(prompt, message_history=None):
     except Exception as e:
         return f"Error: {str(e)}", message_history
 
-def main():
-    print("AI Chatbot (type 'quit' to exit)")
-    while True:
-        user_input = input("You: ")
-        if user_input.lower() == "quit":
-            break
-        response = generate_response(user_input)
-        print(f"Chatbot: {response}")
+# def main():
+#     print("AI Chatbot (type 'quit' to exit)")
+#     while True:
+#         user_input = input("You: ")
+#         if user_input.lower() == "quit":
+#             break
+#         response = generate_response(user_input)
+#         print(f"Chatbot: {response}")
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
