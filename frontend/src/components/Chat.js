@@ -6,7 +6,39 @@ const Chat = () => {
     const [messages, setMessages] = useState([]);  // to store message history
     const [input, setInput] = useState(''); // user input
     const [isTyping, SetIsTyping] = useState(false); // chatbot typing state
+    const [allChats, setAllChats] = useState([]);
+    const [currentChatId, setCurrentChatId] = useState(null);
 
+    useEffect(() => {
+        const savedChats = JSON.parse(localStorage.getItem('chatSummaries')) || [];
+        setAllChats(savedChats);
+    }, []);
+
+    useEffect(() => {
+        if (currentChatId) {
+            const chatSummaries = JSON.parse(localStorage.getItem('chatSummaries')) || [];
+            const currentChat = chatSummaries.find(chat => chat.id === currentChatId);
+            if (currentChat) {
+                setMessages(currentChat.messages);
+            }
+        }
+    }, [currentChatId]);
+
+    useEffect(() => {
+        if (currentChatId) {
+            let chatSummaries = JSON.parse(localStorage.getItem('chatSummaries')) || [];
+
+            const updatedChats = chatSummaries.map(chat => {
+                if (chat.id === currentChatId) {
+                    return { ...chat, messages: messages };
+                }
+                return chat;
+            });
+
+            localStorage.setItem('chatSummaries', JSON.stringify(updatedChats));
+        }
+    }, [messages, currentChatId]);
+    
     useEffect(() => {
         // WebSocket connection opened
         socket.onopen = () => {
@@ -42,15 +74,28 @@ const Chat = () => {
     const sendMessage = () => {
         if (input.trim() !== "") {
             const newMessage = {text: input, sender: 'You'};
-            socket.send(input); // send user input to backend
             setMessages((prevMessages) => [...prevMessages, newMessage]);
+            socket.send(input); // send user input to backend
             setInput('');
             SetIsTyping(true); // when bot is typing
         }
     };
 
-    const handleInputChange = (e) => {
-        setInput(e.target.value);
+    const createNewChat = () => {
+        const newChat = {
+            id: Date.now(),
+            name: prompt("Enter a name for this chat (you can edit this later)"),
+            messages: []
+        };
+
+        const updatedChats = [...allChats, newChat];
+        localStorage.setItem('chatSummaries', JSON.stringify(updatedChats));
+        setAllChats(updatedChats);
+        setCurrentChatId(newChat.id);
+    };
+
+    const handleChatClick = (chatId) => {
+        setCurrentChatId(chatId);
     };
 
     const handleKeyDown = (e) => {
@@ -63,11 +108,13 @@ const Chat = () => {
         <div className="app-container">
             <div className="sidebar">
                 <h3>Conversation History</h3>
-                {messages.map((message, index) => (
-                    <div key={index} className="history-message">
-                        {message.sender}: {message.text}
+                {allChats.length === 0 && <p>No previous chats.</p>}
+                {allChats.map((chat) => (
+                    <div key={chat.id} onClick={() => handleChatClick(chat.id)}>
+                        {chat.name || 'Unnamed Chat'}
                     </div>
                 ))}
+                <button onClick={createNewChat}>New Chat</button>
             </div>
 
             <div className="chat-container">
@@ -84,7 +131,7 @@ const Chat = () => {
                     <input
                         type="text"
                         value={input}
-                        onChange={handleInputChange}
+                        onChange={(e) => setInput(e.target.value)}
                         onKeyDown={handleKeyDown}
                         placeholder="Type your message..."
                     />

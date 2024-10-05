@@ -21,12 +21,7 @@ def generate_response(prompt, message_history=None):
     try:
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",  # Chat model
-            # messages=[
-            #     {"role": "system", "content": "You are a helpful assistant."},  # System instruction (optional)
-            #     {"role": "user", "content": prompt},  # The user's input goes here
-            # ],
             messages=message_history,
-            max_tokens=150,  # Limit the length of the response
             n=1,  # Want one response
             temperature=0.7,  # Control the randomness of the output
         )
@@ -37,15 +32,3 @@ def generate_response(prompt, message_history=None):
         return chatbot_reply, message_history
     except Exception as e:
         return f"Error: {str(e)}", message_history
-
-# def main():
-#     print("AI Chatbot (type 'quit' to exit)")
-#     while True:
-#         user_input = input("You: ")
-#         if user_input.lower() == "quit":
-#             break
-#         response = generate_response(user_input)
-#         print(f"Chatbot: {response}")
-
-# if __name__ == "__main__":
-#     main()

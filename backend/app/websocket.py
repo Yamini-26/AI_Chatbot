@@ -29,5 +29,4 @@ async def websocket_endpoint(websocket: WebSocket):
             await websocket.send_text(f"{response}")
     except Exception as e:
         print(f"Error: {str(e)}")
-            # break
         await websocket.close()
