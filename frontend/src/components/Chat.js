@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { marked } from 'marked';
 import socket from '../utils/websocket'; 
 import './Chat.css';
+
+const formatBotResponse = (text) => {
+    return marked(text); // Convert Markdown to HTML
+};
 
 const Chat = () => {
     const [messages, setMessages] = useState([]);  // to store message history
@@ -47,7 +52,7 @@ const Chat = () => {
 
         // Listen for chatbot responses
         socket.onmessage = (event) => {
-            const newMessage = {text: event.data, sender: 'Bot'};
+            const newMessage = {text: formatBotResponse(event.data), sender: 'Bot'};
             console.log("Received from Bot: ", newMessage);
             setMessages((prevMessages) => [...prevMessages, newMessage]);
             SetIsTyping(false); // when bot has finished typing
@@ -120,8 +125,9 @@ const Chat = () => {
             <div className="chat-container">
                 <div className="chat-box">
                     {messages.map((message, index) => (
-                        <div key={index} className={`message ${message.sender === 'You' ? 'you' : 'bot'}`}>
-                            {message.sender}: {message.text}
+                        <div key={index} className={`message ${message.sender === 'You' ? 'you' : 'bot'}`}
+                            dangerouslySetInnerHTML={{ __html: message.text }}>
+                            {/* {message.sender}: {message.text} */}
                         </div>
                     ))}
                     {isTyping && <div className='bot-typing'>Bot is typing...</div>}
